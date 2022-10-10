@@ -1,7 +1,6 @@
 <script>
     import {createEventDispatcher, getContext, onDestroy, setContext} from 'svelte';
     import L from 'leaflet';
-    import axios from 'axios';
 
     import EventBridge from '../lib/EventBridge';
 
@@ -25,10 +24,11 @@
             geojson = L.geoJSON(null, options).addTo(getMap());
             eventBridge = new EventBridge(geojson, dispatch, events);
         }
-        axios.get(url)
+        fetch(url)
+            .then((response) => response.json())
             .then(result => {
                 geojson.clearLayers();
-                geojson.addData(result.data);
+                geojson.addData(result);
             });
     }
 
